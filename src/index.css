@@ -1,0 +1,70 @@
+/* Ruta: src/index.css  (REEMPLAZA TODO el contenido) */
+@import "tailwindcss";
+
+/*
+  Contrast ratios (WCAG 2.2, AA = 4.5:1 text):
+  silver-300 on navy-950 ≈ 13:1 | silver-400 on navy-950 ≈ 10:1 | silver-500 on navy-950 ≈ 6.7:1
+  cyan-500 on navy-950 ≈ 9.3:1  | navy-950 on cyan-500 ≈ 9.3:1
+  cyan-700 on white / slate-50 ≈ 5.6:1 / 5.4:1  (use cyan-700, NOT cyan-600, for small text on light backgrounds)
+*/
+@theme static {
+  --color-navy-950: #060d1f;
+  --color-navy-900: #0a1630;
+  --color-navy-800: #0f2147;
+  --color-navy-700: #16306a;
+
+  --color-cyan-400: #33d1ff;
+  --color-cyan-500: #00c2ff;
+  --color-cyan-600: #00a3d9;
+  --color-cyan-700: #00708f;
+
+  --color-silver-300: #d3dae6;
+  --color-silver-400: #b8c2d1;
+  --color-silver-500: #8d99ad;
+
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+}
+
+/* Short aliases (also read by Background3D) */
+:root {
+  --navy-950: var(--color-navy-950);
+  --navy-900: var(--color-navy-900);
+  --navy-800: var(--color-navy-800);
+  --navy-700: var(--color-navy-700);
+  --cyan-400: var(--color-cyan-400);
+  --cyan-500: var(--color-cyan-500);
+  --cyan-600: var(--color-cyan-600);
+  --cyan-700: var(--color-cyan-700);
+  --silver-300: var(--color-silver-300);
+  --silver-400: var(--color-silver-400);
+  --silver-500: var(--color-silver-500);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* offset for the fixed navbar */
+}
+
+body {
+  background-color: var(--color-navy-900);
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan-500);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-cyan-500);
+  color: var(--color-navy-950);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

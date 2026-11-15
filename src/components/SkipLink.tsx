@@ -1,0 +1,12 @@
+// Ruta: src/components/SkipLink.tsx
+// Lets keyboard and screen-reader users bypass the navigation (WCAG 2.4.1)
+export default function SkipLink() {
+  return (
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-lg focus:bg-cyan-500 focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-navy-950 focus:outline-none focus:ring-2 focus:ring-white"
+    >
+      Skip to main content
+    </a>
+  );
+}

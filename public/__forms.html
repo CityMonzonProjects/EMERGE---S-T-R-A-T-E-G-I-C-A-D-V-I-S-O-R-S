@@ -1,0 +1,19 @@
+<!doctype html>
+<!-- Static form definition so Netlify can detect the "contact" form at deploy
+     time (the real form is rendered by React). Keep field names in sync with
+     src/components/Contact.tsx. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Contact form definition</title>
+  </head>
+  <body>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>
