@@ -48,22 +48,22 @@ export default function Contact() {
   return (
     <section
       id="contacto"
-      className="scroll-mt-24 relative overflow-hidden bg-linear-to-b from-navy-950 to-navy-900 py-24"
+      className="scroll-mt-24 relative overflow-hidden bg-linear-to-b from-navy-950 to-navy-900 py-20 sm:py-28 lg:py-32"
     >
       <div className="pointer-events-none absolute -right-32 top-10 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-navy-700/30 blur-3xl" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8 lg:gap-16">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+          <span className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
             Contact
           </span>
-          <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-white sm:text-5xl">
+          <h2 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
             Ready to Accelerate Your Growth?
           </h2>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-silver-300">
@@ -160,12 +160,13 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-500 px-8 py-4 text-base font-semibold text-navy-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-400 hover:shadow-xl hover:shadow-cyan-500/30 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-500 px-8 py-4 text-base font-semibold text-navy-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-400 hover:shadow-xl hover:shadow-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-navy-900 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
             >
               <Send size={18} />
               {status === "sending" ? "Sending..." : "Send Message"}
             </button>
 
+            <div className="min-h-14" aria-live="polite">
             {status === "error" && (
               <p role="alert" className="text-center text-sm font-medium text-red-300">
                 Something went wrong and your message was not sent. Please try again in a moment.
@@ -180,6 +181,7 @@ export default function Contact() {
                 Thank you! Your message has been sent. We will be in touch soon.
               </p>
             )}
+            </div>
           </div>
         </motion.form>
       </div>

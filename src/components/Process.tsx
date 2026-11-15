@@ -53,10 +53,10 @@ const item: Variants = {
 
 export default function Process() {
   return (
-    <section id="proceso" className="relative scroll-mt-24 overflow-hidden bg-navy-950 py-24">
+    <section id="proceso" className="relative scroll-mt-24 overflow-hidden bg-navy-950 py-20 sm:py-28 lg:py-32">
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
 
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

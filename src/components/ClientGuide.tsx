@@ -30,7 +30,7 @@ export default function ClientGuide() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="guide" className="bg-slate-50 py-20 sm:py-28 lg:py-32">
+    <section id="guide" className="scroll-mt-24 bg-slate-50 py-20 sm:py-28 lg:py-32">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -39,10 +39,10 @@ export default function ClientGuide() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="lg:col-span-5"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">
+          <span className="text-sm font-semibold uppercase tracking-widest text-cyan-700">
             Client Guide
           </span>
-          <h2 className="text-balance mt-4 font-display text-4xl font-semibold leading-[1.1] text-navy-950 sm:text-5xl">
+          <h2 className="text-balance mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-tight text-navy-950 sm:text-5xl md:text-6xl">
             What to Expect
           </h2>
           <p className="mt-5 max-w-md text-lg leading-relaxed text-navy-800/80">

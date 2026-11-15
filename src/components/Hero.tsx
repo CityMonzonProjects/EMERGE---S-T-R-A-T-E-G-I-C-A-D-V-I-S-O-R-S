@@ -1,6 +1,6 @@
 // Ruta: src/components/Hero.tsx
 import { lazy, Suspense, useEffect, useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import Skeleton from "./ui/Skeleton";
 import { useTypewriter } from "../hooks/useTypewriter";
 import { ArrowRight, CalendarCheck } from "lucide-react";
@@ -55,6 +55,7 @@ export default function Hero() {
   const typed2 = LINE_2.slice(0, Math.max(0, count - LINE_1.length - 1));
   const onLine2 = count > LINE_1.length;
   const [show3D, setShow3D] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (typeof window.requestIdleCallback === "function") {
@@ -92,13 +93,6 @@ export default function Hero() {
           className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(6,13,31,0.88),rgba(6,13,31,0.5)_60%,transparent)] sm:h-[40rem] sm:w-[40rem] lg:h-[52rem] lg:w-[52rem]"
         />
 
-        <motion.span
-          variants={item}
-          className="mb-5 inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-cyan-400 sm:mb-6 sm:text-sm"
-        >
-          Emerge Strategic Advisors
-        </motion.span>
-
         <motion.h1
           variants={item}
           className="text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
@@ -116,9 +110,7 @@ export default function Hero() {
           variants={item}
           className="mt-5 max-w-2xl text-base leading-relaxed text-silver-300 sm:mt-6 sm:text-lg md:text-xl"
         >
-          A clearer picture. A stronger strategy. We analyze your business,
-          uncover your biggest revenue opportunities and build a 90-day plan
-          with measurable results.
+          We turn complex business challenges into clear, measurable growth.
         </motion.p>
 
         <motion.div
@@ -144,6 +136,28 @@ export default function Hero() {
           </a>
         </motion.div>
       </motion.div>
+
+      {/* Decorative scroll cue; static when the visitor prefers reduced motion */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3"
+      >
+        <span className="text-xs font-semibold uppercase tracking-widest text-silver-400">
+          Scroll to explore
+        </span>
+        <span className="relative block h-12 w-px overflow-hidden bg-white/15">
+          <motion.span
+            className="absolute inset-x-0 top-0 block h-5 bg-cyan-500"
+            initial={{ y: reduceMotion ? 0 : "-100%" }}
+            animate={reduceMotion ? { y: 0 } : { y: ["-100%", "240%"] }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : { duration: 2, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.4 }
+            }
+          />
+        </span>
+      </div>
     </section>
   );
 }
