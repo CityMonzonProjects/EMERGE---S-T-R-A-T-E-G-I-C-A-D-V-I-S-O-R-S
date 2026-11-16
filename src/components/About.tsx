@@ -1,148 +1,102 @@
 // Ruta: src/components/About.tsx
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  type Variants,
-} from "framer-motion";
+import { m } from "framer-motion";
+import Eyebrow from "./Eyebrow";
+import Photo from "./Photo";
+import Icon from "./icons/Icon";
+import type { IconName } from "./icons/names";
+import { fadeUp, inView, stagger } from "./motion";
 
-const OFFICE_IMAGE =
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80";
-
-const pillars = [
+const pillars: { icon: IconName; label: string; text: string }[] = [
   {
+    icon: "compass",
     label: "Our Mission",
     text: "To give leaders a clearer picture of their business and a stronger strategy to grow it, turning insight into decisions and decisions into measurable results.",
   },
   {
+    icon: "horizon",
     label: "Our Vision",
     text: "To be the trusted strategic partner of ambitious companies, known for rigorous thinking and for plans that actually get executed.",
   },
   {
+    icon: "stairs",
     label: "Our Approach",
     text: "Rigorous diagnosis first: we study your market, customers, finances and operations before recommending anything. Then we build actionable plans with prioritized initiatives, clear owners and KPIs your team can deliver.",
   },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18 } },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" },
-  },
-};
-
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  // Subtle parallax: the photo drifts slower than the page
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
-
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative scroll-mt-24 overflow-hidden bg-navy-950 py-20 sm:py-28 lg:py-32"
-    >
-      {/* Full-bleed office photo */}
-      <motion.img
-        src={OFFICE_IMAGE}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        decoding="async"
-        style={reduceMotion ? undefined : { y: imageY }}
-        className="absolute -inset-y-[6%] inset-x-0 h-[112%] w-full max-w-none object-cover"
-      />
-      {/* Light navy tint overall; stronger on the text side */}
-      <div aria-hidden="true" className="absolute inset-0 bg-navy-950/30" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-linear-to-r from-navy-950/70 via-navy-950/20 to-transparent"
-      />
-      {/* Keeps the tagline legible over the photo */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-navy-950/70 to-transparent"
-      />
+    <section id="about" className="on-light relative scroll-mt-24 bg-paper py-24 text-navy-950 sm:py-32">
+      <div className="mx-auto grid max-w-7xl gap-20 px-5 sm:px-8 lg:grid-cols-12 lg:gap-12">
+        {/* Collage */}
+        <m.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative order-2 mb-14 lg:sticky lg:top-32 lg:order-1 lg:col-span-6 lg:mb-0 lg:self-start lg:mt-16"
+        >
+          <Photo
+            name="boardroom"
+            alt="Leadership team meeting around a long boardroom table"
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            className="aspect-4/3 w-full rounded-[1.75rem] object-cover"
+          />
+          <div className="absolute -bottom-14 right-3 w-[48%] overflow-hidden rounded-2xl border-8 border-paper shadow-xl shadow-navy-950/15 sm:-right-6">
+            <Photo
+              name="advisory"
+              alt="Two executives in a one-to-one advisory conversation"
+              sizes="(min-width: 1024px) 22vw, 50vw"
+              className="aspect-4/3 w-full object-cover"
+            />
+          </div>
+          <figure className="absolute -top-10 left-4 max-w-[17rem] rounded-2xl bg-navy-950 p-6 text-white shadow-2xl shadow-navy-950/25 sm:left-8 lg:-left-6">
+            <blockquote className="font-display text-2xl italic leading-snug">
+              A clearer picture.
+              <br />
+              <span className="text-cyan-400">A stronger strategy.</span>
+            </blockquote>
+          </figure>
+        </m.div>
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:items-end lg:px-8">
-        {/* Glass text panel */}
-        <motion.div
-          variants={container}
+        {/* Text */}
+        <m.div
+          variants={stagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="rounded-3xl border border-white/10 bg-navy-950/80 p-6 shadow-2xl shadow-navy-950/40 backdrop-blur-md sm:p-10 lg:col-span-7 lg:p-14"
+          viewport={inView}
+          className="order-1 lg:order-2 lg:col-span-6 lg:pl-10"
         >
-          <motion.span
-            variants={item}
-            className="text-sm font-semibold uppercase tracking-widest text-cyan-400"
+          <m.div variants={fadeUp}>
+            <Eyebrow index="01">About Emerge</Eyebrow>
+          </m.div>
+          <m.h2
+            variants={fadeUp}
+            className="mt-7 text-balance font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.02] tracking-[-0.02em]"
           >
-            About Emerge
-          </motion.span>
+            Strategy built on a <em className="text-cyan-700">clearer picture.</em>
+          </m.h2>
+          <m.p variants={fadeUp} className="mt-7 max-w-xl text-lg leading-relaxed text-navy-800/85 sm:text-xl">
+            Emerge Strategic Advisors helps organizations see their business as it really is and
+            decide, with confidence, where to grow next.
+          </m.p>
 
-          <motion.h2
-            variants={item}
-            className="text-balance mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl"
-          >
-            Strategy built on a clearer picture.
-          </motion.h2>
-
-          <motion.p
-            variants={item}
-            className="mt-6 max-w-2xl text-xl leading-relaxed text-silver-300 sm:text-2xl"
-          >
-            Emerge Strategic Advisors helps organizations see their business
-            as it really is and decide, with confidence, where to grow next.
-          </motion.p>
-
-          <div className="mt-12">
-            {pillars.map((pillar, index) => (
-              <motion.div
-                key={pillar.label}
-                variants={item}
-                className="grid gap-3 border-t border-white/15 py-8 sm:grid-cols-[9rem_1fr] sm:gap-8"
+          <ul className="mt-12 border-t border-navy-950/10">
+            {pillars.map((p) => (
+              <m.li
+                key={p.label}
+                variants={fadeUp}
+                className="grid grid-cols-[auto_1fr] gap-x-5 border-b border-navy-950/10 py-7"
               >
+                <Icon name={p.icon} size={34} className="mt-0.5 text-navy-950" />
                 <div>
-                  <span className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-                    0{index + 1}
-                  </span>
-                  <h3 className="mt-1 font-display text-2xl font-semibold tracking-tight text-white">
-                    {pillar.label}
-                  </h3>
+                  <h3 className="font-display text-2xl leading-tight">{p.label}</h3>
+                  <p className="mt-2 leading-relaxed text-navy-800/80">{p.text}</p>
                 </div>
-                <p className="text-lg leading-relaxed text-silver-300 sm:text-xl">
-                  {pillar.text}
-                </p>
-              </motion.div>
+              </m.li>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Photo side: the image takes the lead, with the tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          className="text-balance font-display text-3xl font-semibold leading-tight text-white drop-shadow-[0_2px_12px_rgba(6,13,31,0.8)] sm:text-4xl lg:col-span-5 lg:pb-6 lg:text-5xl"
-        >
-          A clearer picture.
-          <br />A stronger strategy.
-        </motion.p>
+          </ul>
+        </m.div>
       </div>
     </section>
   );

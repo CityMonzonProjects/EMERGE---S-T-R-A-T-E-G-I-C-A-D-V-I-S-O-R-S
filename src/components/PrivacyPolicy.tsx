@@ -7,14 +7,22 @@ const sections = [
   {
     title: "Information we collect",
     body: [
-      "When you use the contact form, we receive the name, email address and message you choose to submit.",
+      "Discovery Workbook: when you submit the workbook, we receive the answers you choose to provide, including your name, email, company details and information about your business. Only your name, email and company name are required.",
+      "Short note form: when you send a note, we receive the name, email address and message you submit.",
       "Our hosting and form-processing provider may also process technical data, such as your IP address and browser type, as part of delivering the site and protecting it from spam.",
+    ],
+  },
+  {
+    title: "Workbook answers stored on your device",
+    body: [
+      "While you complete the workbook, your answers are saved in your own browser's local storage so you can return later. They are not sent to us until you press Send. You can delete them at any time with Start over on the workbook page, or by clearing your browser's site data.",
+      "You can also download a copy of your answers as a text file before sending.",
     ],
   },
   {
     title: "How we use it",
     body: [
-      "We use the information you send to respond to your inquiry and to discuss how we may work together. We do not use it for any unrelated purpose.",
+      "We use the information you send to respond to you, to evaluate and prepare for a potential engagement, and to discuss how we may work together. We do not use it for any unrelated purpose.",
     ],
   },
   {
@@ -26,20 +34,20 @@ const sections = [
   {
     title: "Retention",
     body: [
-      "We keep your message only as long as needed to respond to you and manage any resulting relationship.",
+      "We keep what you send only as long as needed to respond to you and to manage any resulting relationship.",
     ],
   },
   {
     title: "Cookies, analytics and third-party fonts",
     body: [
       "This site does not currently use advertising or analytics cookies.",
-      "Fonts are loaded from Google Fonts, which may receive your IP address when the page loads.",
+      "Fonts are loaded from Google Fonts, which may receive your IP address when the page loads. Photographs are served from this site.",
     ],
   },
   {
     title: "Your choices",
     body: [
-      "You may ask us to access, correct or delete the information you have sent us. Use the contact form on our home page to make a request.",
+      "You may ask us to access, correct or delete the information you have sent us. Use the short note form on our home page to make a request.",
     ],
   },
   {
@@ -59,7 +67,7 @@ export default function PrivacyPolicy() {
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
           Legal
         </span>
-        <h1 className="mt-3 text-balance font-display text-4xl font-semibold text-white sm:text-5xl">
+        <h1 className="mt-3 text-balance font-display text-4xl font-normal text-white sm:text-5xl">
           Privacy Policy
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-silver-300">
@@ -76,7 +84,7 @@ export default function PrivacyPolicy() {
         <div className="mt-12 space-y-10">
           {sections.map(({ title, body }) => (
             <section key={title}>
-              <h2 className="font-display text-2xl font-semibold text-white">
+              <h2 className="font-display text-2xl text-white">
                 {title}
               </h2>
               {body.map((p) => (

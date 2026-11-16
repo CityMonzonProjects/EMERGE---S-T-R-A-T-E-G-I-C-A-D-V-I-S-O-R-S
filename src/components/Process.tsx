@@ -1,16 +1,18 @@
 // Ruta: src/components/Process.tsx
-import { motion, type Variants } from "framer-motion";
+import { m } from "framer-motion";
+import Eyebrow from "./Eyebrow";
+import Photo from "./Photo";
+import Icon from "./icons/Icon";
+import type { IconName } from "./icons/names";
+import { EASE, fadeUp, inView, stagger } from "./motion";
 
-type Phase = {
-  days: string;
-  title: string;
-  points: string[];
-};
+type Phase = { days: string; title: string; icon: IconName; points: string[] };
 
 const phases: Phase[] = [
   {
-    days: "Days 1-30",
+    days: "Days 1–30",
     title: "Discovery & Audit",
+    icon: "diagnosis",
     points: [
       "Stakeholder interviews and document collection",
       "Marketing, sales and competitive audit",
@@ -18,8 +20,9 @@ const phases: Phase[] = [
     ],
   },
   {
-    days: "Days 31-60",
+    days: "Days 31–60",
     title: "Strategy & Optimization",
+    icon: "compass",
     points: [
       "Opportunity sizing and prioritized roadmap",
       "Quick wins across marketing and sales",
@@ -27,8 +30,9 @@ const phases: Phase[] = [
     ],
   },
   {
-    days: "Days 61-90",
+    days: "Days 61–90",
     title: "Execution & Review",
+    icon: "growth",
     points: [
       "Launch of priority growth initiatives",
       "KPI tracking and reporting cadence",
@@ -37,81 +41,110 @@ const phases: Phase[] = [
   },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.25 } },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: "easeOut" },
-  },
-};
+const markers = [0, 30, 60, 90];
 
 export default function Process() {
   return (
-    <section id="proceso" className="relative scroll-mt-24 overflow-hidden bg-navy-950 py-20 sm:py-28 lg:py-32">
-      {/* Subtle planning grid */}
-      <div
+    <section id="proceso" className="relative isolate scroll-mt-24 overflow-hidden bg-navy-950 py-24 text-white sm:py-32">
+      <Photo name="skyline" alt="" sizes="100vw" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-30" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-b from-navy-950 via-navy-950/80 to-navy-950" />
+      <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-size-[56px_56px] bg-[linear-gradient(to_right,rgba(15,33,71,0.35)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,33,71,0.35)_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
-      />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+        className="pointer-events-none absolute -bottom-20 -right-6 -z-10 select-none font-display text-[clamp(14rem,32vw,26rem)] italic leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.09)]"
+      >
+        90
+      </span>
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <span className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-            Our Proven Process
-          </span>
-          <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
-            The 90-Day Roadmap
-          </h2>
-          <p className="mt-5 text-lg leading-relaxed text-silver-300">
-            A structured path from first conversation to measurable results,
-            with clear owners, milestones and KPIs at every stage.
-          </p>
-        </motion.div>
-
-        <motion.ol
-          variants={container}
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <m.div
+          variants={stagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="relative mt-16 grid gap-10 lg:grid-cols-3 lg:gap-8"
+          viewport={inView}
+          className="grid gap-8 lg:grid-cols-12 lg:items-end"
         >
-          {phases.map(({ days, title, points }, index) => (
-            <motion.li
-              key={days}
-              variants={item}
-              className="rounded-2xl border border-t-2 border-navy-800 border-t-cyan-500 bg-navy-900 p-7 shadow-lg shadow-black/20 sm:p-8"
+          <div className="lg:col-span-7">
+            <m.div variants={fadeUp}>
+              <Eyebrow index="03" onDark>
+                How We Work
+              </Eyebrow>
+            </m.div>
+            <m.h2
+              variants={fadeUp}
+              className="mt-7 font-display text-[clamp(2.5rem,5.5vw,4.25rem)] font-normal leading-[1.02] tracking-[-0.02em]"
             >
-              <span className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-                Phase {index + 1}
+              The 90-Day <em className="text-cyan-400">Roadmap.</em>
+            </m.h2>
+          </div>
+          <m.p variants={fadeUp} className="text-lg leading-relaxed text-silver-300 lg:col-span-5 lg:pb-2">
+            A structured path from first conversation to measurable results, with clear owners,
+            milestones and KPIs at every stage.
+          </m.p>
+        </m.div>
+
+        {/* Day track (desktop) */}
+        <div aria-hidden="true" className="relative mt-20 hidden lg:block">
+          <div className="h-px bg-white/15" />
+          <m.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={inView}
+            transition={{ duration: 1.8, ease: EASE }}
+            className="absolute inset-x-0 top-0 h-px origin-left bg-cyan-500"
+          />
+          {markers.map((d, i) => (
+            <div
+              key={d}
+              className={`absolute top-0 ${i === markers.length - 1 ? "-translate-x-full text-right" : i > 0 ? "-translate-x-1/2 text-center" : ""}`}
+              style={{ left: `${(i / (markers.length - 1)) * 100}%` }}
+            >
+              <span
+                className={`absolute -top-[6px] size-[13px] rounded-full border-2 border-cyan-500 bg-navy-950 ${
+                  i === markers.length - 1 ? "right-0" : i > 0 ? "left-1/2 -translate-x-1/2" : "left-0"
+                }`}
+              />
+              <span className="mt-5 block whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] text-silver-400">
+                Day {d}
               </span>
-              <p className="mt-1 text-sm leading-relaxed text-silver-300">{days}</p>
-              <h3 className="mt-5 text-balance font-display text-2xl font-semibold tracking-tight text-white">
-                {title}
-              </h3>
-              <ul className="mt-6 space-y-3 border-t border-white/10 pt-5 text-sm leading-relaxed text-silver-300">
-                {points.map((point) => (
-                  <li key={point} className="flex items-start gap-2.5">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500" />
-                    {point}
+            </div>
+          ))}
+        </div>
+
+        <m.ol
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="mt-16 grid gap-12 lg:mt-20 lg:grid-cols-3 lg:gap-0"
+        >
+          {phases.map((phase, i) => (
+            <m.li
+              key={phase.days}
+              variants={fadeUp}
+              className={`relative border-l border-white/15 pl-8 lg:pr-8 ${i === 0 ? "lg:border-l-0 lg:pl-0" : "lg:pl-10"}`}
+            >
+              <span
+                aria-hidden="true"
+                className="absolute -left-[7px] top-1.5 size-[13px] rounded-full border-2 border-cyan-500 bg-navy-950 lg:hidden"
+              />
+              <div className="flex items-center gap-4">
+                <Icon name={phase.icon} size={36} className="text-silver-300" />
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                  Phase {i + 1} · {phase.days}
+                </p>
+              </div>
+              <h3 className="mt-6 font-display text-3xl leading-tight sm:text-4xl">{phase.title}</h3>
+              <ul className="mt-6 space-y-3 leading-relaxed text-silver-300">
+                {phase.points.map((p) => (
+                  <li key={p} className="flex items-start gap-3">
+                    <span aria-hidden="true" className="mt-3 h-px w-4 shrink-0 bg-cyan-400" />
+                    {p}
                   </li>
                 ))}
               </ul>
-            </motion.li>
+            </m.li>
           ))}
-        </motion.ol>
+        </m.ol>
       </div>
     </section>
   );

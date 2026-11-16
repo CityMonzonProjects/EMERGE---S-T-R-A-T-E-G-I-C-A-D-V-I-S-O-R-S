@@ -1,12 +1,13 @@
 // Ruta: src/components/Navbar.tsx
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { CalendarCheck, Menu, X } from "lucide-react";
+import { m, useScroll, useSpring } from "framer-motion";
+import Glyph from "./icons/Glyph";
 
 const links = [
+  { label: "About", href: "#about", id: "about" },
   { label: "Services", href: "#servicios", id: "servicios" },
   { label: "Process", href: "#proceso", id: "proceso" },
-  { label: "Contact", href: "#contacto", id: "contacto" },
+  { label: "Client Guide", href: "#guide", id: "guide" },
 ];
 
 export default function Navbar() {
@@ -20,6 +21,7 @@ export default function Navbar() {
     damping: 30,
     restDelta: 0.001,
   });
+
   useEffect(() => {
     let frame = 0;
 
@@ -27,13 +29,10 @@ export default function Navbar() {
       frame = 0;
       setScrolled(window.scrollY > 16);
 
-      const stack = document.elementsFromPoint(window.innerWidth / 2, 48);
-      const host = stack.find(
-        (el) => !el.closest("header") && el.closest("section"),
-      );
-      const section = host?.closest<HTMLElement>("section");
-
-      setActiveId(section?.id ?? "");
+      // Scrollspy: the section under the navbar is the active one
+      const stack = document.elementsFromPoint(window.innerWidth / 2, 96);
+      const host = stack.find((el) => !el.closest("header") && el.closest("section"));
+      setActiveId(host?.closest<HTMLElement>("section")?.id ?? "");
     };
 
     const onScroll = () => {
@@ -59,19 +58,16 @@ export default function Navbar() {
   }, [open]);
 
   const glass = scrolled || open;
-
-  const shell = !glass
-    ? "border-transparent bg-transparent py-3.5"
-    : "border-white/15 bg-navy-950/80 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md backdrop-saturate-150";
-  const linkBase = "text-silver-300 hover:text-cyan-400";
-  const linkActive = "text-white";
+  const shell = glass
+    ? "border-white/12 bg-navy-950/85 py-2.5 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-md backdrop-saturate-150"
+    : "border-transparent bg-transparent py-4";
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <nav
-        className={`relative mx-auto flex max-w-6xl items-center justify-between rounded-2xl border px-4 transition-all duration-500 sm:px-5 ${shell}`}
+        aria-label="Main"
+        className={`relative mx-auto flex max-w-7xl items-center justify-between rounded-2xl border px-4 transition-all duration-500 sm:px-6 ${shell}`}
       >
-        {/* Logo: white wordmark; the navbar glass is always dark so it stays legible */}
         <a href="#" aria-label="Emerge Strategic Advisors, back to top" className="flex items-center">
           <img
             src="/logo.webp"
@@ -83,8 +79,7 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop links */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-9 lg:flex">
           {links.map((link) => {
             const active = activeId === link.id;
             return (
@@ -92,13 +87,13 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "true" : undefined}
-                className={`relative text-sm font-medium transition-colors duration-300 ${
-                  active ? linkActive : linkBase
+                className={`relative py-2 text-sm font-medium transition-colors duration-300 ${
+                  active ? "text-white" : "text-silver-300 hover:text-white"
                 }`}
               >
                 {link.label}
                 <span
-                  className={`absolute -bottom-1 left-0 h-px bg-cyan-500 transition-all duration-300 ${
+                  className={`absolute bottom-0 left-0 h-px bg-cyan-500 transition-all duration-300 ${
                     active ? "w-full" : "w-0"
                   }`}
                 />
@@ -106,58 +101,62 @@ export default function Navbar() {
             );
           })}
           <a
-            href="#contacto"
-            className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition-all hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30"
+            href="/discovery"
+            className="group inline-flex items-center gap-2 rounded-full bg-cyan-500 py-2.5 pl-5 pr-4 text-sm font-semibold text-navy-950 transition-colors hover:bg-cyan-400"
           >
-            <CalendarCheck size={16} />
-            Schedule a Consultation
+            Start Your Discovery
+            <Glyph name="arrowUpRight" size={16} className="transition-transform group-hover:-translate-y-px group-hover:translate-x-px" />
           </a>
         </div>
 
-        {/* Mobile button */}
         <button
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className={`rounded-lg p-2 transition-colors md:hidden ${linkBase}`}
+          className="grid size-11 place-items-center rounded-full text-silver-300 transition-colors hover:text-white lg:hidden"
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          <Glyph name={open ? "close" : "menu"} size={24} />
         </button>
 
         {/* Reading progress */}
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{ scaleX: progress }}
-          className={`absolute inset-x-6 bottom-0 h-0.5 origin-left rounded-full bg-cyan-500 transition-opacity duration-500 ${
+          className={`absolute inset-x-6 bottom-0 h-px origin-left bg-cyan-500 transition-opacity duration-500 ${
             scrolled ? "opacity-100" : "opacity-0"
           }`}
         />
       </nav>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="mx-auto mt-2 max-w-6xl rounded-2xl border border-white/15 bg-navy-950/80 p-5 backdrop-blur-md backdrop-saturate-150 md:hidden">
-          <div className="flex flex-col gap-4">
+        <div
+          id="mobile-menu"
+          className="mx-auto mt-2 max-w-7xl rounded-2xl border border-white/12 bg-navy-950/95 p-3 backdrop-blur-md lg:hidden"
+        >
+          <ul>
             {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className={`text-base font-medium ${linkBase}`}
-              >
-                {link.label}
-              </a>
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="flex min-h-12 items-center justify-between rounded-xl px-4 text-base font-medium text-silver-300 hover:bg-white/5 hover:text-white"
+                >
+                  {link.label}
+                  <Glyph name="arrowRight" size={18} className="text-silver-500" />
+                </a>
+              </li>
             ))}
-            <a
-              href="#contacto"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-navy-950"
-            >
-              <CalendarCheck size={16} />
-              Schedule a Consultation
-            </a>
-          </div>
+          </ul>
+          <a
+            href="/discovery"
+            onClick={() => setOpen(false)}
+            className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-full bg-cyan-500 px-5 text-sm font-semibold text-navy-950"
+          >
+            Start Your Discovery
+            <Glyph name="arrowUpRight" size={16} />
+          </a>
         </div>
       )}
     </header>
