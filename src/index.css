@@ -26,21 +26,6 @@
   --font-display: "Playfair Display", ui-serif, Georgia, serif;
 }
 
-/* Short aliases (also read by Background3D) */
-:root {
-  --navy-950: var(--color-navy-950);
-  --navy-900: var(--color-navy-900);
-  --navy-800: var(--color-navy-800);
-  --navy-700: var(--color-navy-700);
-  --cyan-400: var(--color-cyan-400);
-  --cyan-500: var(--color-cyan-500);
-  --cyan-600: var(--color-cyan-600);
-  --cyan-700: var(--color-cyan-700);
-  --silver-300: var(--color-silver-300);
-  --silver-400: var(--color-silver-400);
-  --silver-500: var(--color-silver-500);
-}
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem; /* offset for the fixed navbar */

@@ -61,6 +61,25 @@ const item: Variants = {
   },
 };
 
+// Card hover: lifts 5px, glow appears behind, top cyan line brightens
+const cardWrap: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  hover: { y: -5 },
+};
+
+const glow: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 0 },
+  hover: { opacity: 1 },
+};
+
+const accentLine: Variants = {
+  hidden: { opacity: 0.8, boxShadow: "0 0 0 0 rgba(0,194,255,0)" },
+  visible: { opacity: 0.8, boxShadow: "0 0 0 0 rgba(0,194,255,0)" },
+  hover: { opacity: 1, boxShadow: "0 0 18px 3px rgba(0,194,255,0.7)" },
+};
+
 export default function Services() {
   return (
     <section
@@ -96,13 +115,25 @@ export default function Services() {
           className="mt-12 grid gap-6 sm:mt-14 md:grid-cols-2 lg:grid-cols-3"
         >
           {services.map(({ title, description, points }, index) => (
-            <motion.article
+            <motion.div
               key={title}
-              variants={item}
-              className="group relative flex flex-col overflow-hidden rounded-2xl bg-navy-900 p-6 shadow-lg shadow-navy-950/10 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-navy-950/25 sm:p-8 md:last:col-span-2 lg:last:col-span-1"
+              variants={cardWrap}
+              whileHover="hover"
+              transition={{ type: "spring", stiffness: 300, damping: 24 }}
+              className="relative md:last:col-span-2 lg:last:col-span-1"
             >
+              {/* Soft cyan glow behind the card */}
+              <motion.span
+                aria-hidden="true"
+                variants={glow}
+                className="pointer-events-none absolute -inset-3 rounded-3xl bg-cyan-500/25 blur-2xl"
+              />
+            <article className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-navy-900 p-6 shadow-lg shadow-navy-950/10 sm:p-8">
               {/* Cyan accent line */}
-              <span className="absolute inset-x-0 top-0 h-1 bg-cyan-500" />
+              <motion.span
+                variants={accentLine}
+                className="absolute inset-x-0 top-0 h-1 bg-cyan-500"
+              />
 
               <span
                 aria-hidden="true"
@@ -124,7 +155,8 @@ export default function Services() {
                   </li>
                 ))}
               </ul>
-            </motion.article>
+            </article>
+            </motion.div>
           ))}
         </motion.div>
 

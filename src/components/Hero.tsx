@@ -1,13 +1,10 @@
 // Ruta: src/components/Hero.tsx
-import { lazy, Suspense, useEffect, useState } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import Skeleton from "./ui/Skeleton";
 import { useTypewriter } from "../hooks/useTypewriter";
 import { ArrowRight, CalendarCheck } from "lucide-react";
 
-// Lazy-loaded and mounted only when the browser is idle, so three.js never
-// blocks the first paint. The base background is a static navy gradient.
-const Background3D = lazy(() => import("./Background3D"));
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80";
 
 const container: Variants = {
   hidden: {},
@@ -22,13 +19,6 @@ const item: Variants = {
     transition: { duration: 0.8, ease: "easeOut" },
   },
 };
-
-// Soft pulsing glow shown until the 3D background is ready (no layout shift)
-function HeroSkeleton() {
-  return (
-    <Skeleton className="pointer-events-none absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 rounded-full bg-cyan-500/5 blur-3xl sm:h-[32rem] sm:w-[32rem]" />
-  );
-}
 
 const LINE_1 = "Clear Strategy.";
 const LINE_2 = "Real Growth.";
@@ -54,38 +44,30 @@ export default function Hero() {
   const typed1 = LINE_1.slice(0, count);
   const typed2 = LINE_2.slice(0, Math.max(0, count - LINE_1.length - 1));
   const onLine2 = count > LINE_1.length;
-  const [show3D, setShow3D] = useState(false);
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(() => setShow3D(true), { timeout: 2000 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setShow3D(true), 800);
-    return () => window.clearTimeout(id);
-  }, []);
 
   return (
     <section
       id="inicio"
       className="relative isolate overflow-hidden bg-linear-to-b from-navy-950 to-navy-900"
     >
-      {show3D ? (
-        <Suspense fallback={<HeroSkeleton />}>
-          <Background3D />
-        </Suspense>
-      ) : (
-        <HeroSkeleton />
-      )}
-
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-navy-950/70 via-navy-950/30 to-navy-900" />
+      {/* Corporate architecture photo; eager-loaded because it is above the fold */}
+      <img
+        src={HERO_IMAGE}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-navy-950/85" />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-transparent to-navy-900" />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mx-auto flex min-h-svh max-w-5xl flex-col items-center justify-center px-5 pb-16 pt-28 text-center sm:px-6 sm:pb-20 sm:pt-32"
+        className="relative z-10 mx-auto flex min-h-svh max-w-5xl flex-col items-center justify-center px-5 pb-36 pt-28 text-center sm:px-6 sm:pb-44 sm:pt-32"
       >
         {/* Soft radial glow behind the text for legibility */}
         <div

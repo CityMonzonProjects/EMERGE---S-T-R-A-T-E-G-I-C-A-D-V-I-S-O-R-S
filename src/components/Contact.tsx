@@ -8,6 +8,9 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 const initialForm: FormData = { name: "", email: "", message: "" };
 
+const MEETING_IMAGE =
+  "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=1920&q=80";
+
 // Netlify Forms: the form is declared statically in public/__forms.html
 const encode = (data: Record<string, string>) =>
   new URLSearchParams(data).toString();
@@ -50,6 +53,15 @@ export default function Contact() {
       id="contacto"
       className="scroll-mt-24 relative overflow-hidden bg-linear-to-b from-navy-950 to-navy-900 py-20 sm:py-28 lg:py-32"
     >
+      <img
+        src={MEETING_IMAGE}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-navy-950/90 to-navy-900/90" />
       <div className="pointer-events-none absolute -right-32 top-10 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-navy-700/30 blur-3xl" />
 

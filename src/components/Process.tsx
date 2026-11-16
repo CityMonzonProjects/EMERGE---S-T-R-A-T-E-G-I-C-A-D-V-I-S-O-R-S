@@ -54,6 +54,11 @@ const item: Variants = {
 export default function Process() {
   return (
     <section id="proceso" className="relative scroll-mt-24 overflow-hidden bg-navy-950 py-20 sm:py-28 lg:py-32">
+      {/* Subtle planning grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-size-[56px_56px] bg-[linear-gradient(to_right,rgba(15,33,71,0.35)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,33,71,0.35)_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+      />
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
